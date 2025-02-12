@@ -19,6 +19,12 @@
         "type": "input",
         "name": "Results number",
         "default_value": "5"
+      },
+      {
+        "id": "path",
+        "type": "input",
+        "name": "Path to Firefox (requires restart)",
+        "default_value": "~/.mozilla/firefox/"
       }
     ]
   }
