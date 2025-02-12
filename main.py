@@ -3,7 +3,7 @@ from ulauncher.api.client.EventListener import EventListener
 from ulauncher.api.shared.event import KeywordQueryEvent, SystemExitEvent,PreferencesUpdateEvent, PreferencesEvent
 from ulauncher.api.shared.item.ExtensionResultItem import ExtensionResultItem
 from ulauncher.api.shared.action.RenderResultListAction import RenderResultListAction
-from ulauncher.api.shared.action.OpenUrlAction import OpenUrlAction
+from ulauncher.api.shared.action.RunScriptAction import RunScriptAction
 from history import FirefoxHistory
 
 class FirefoxHistoryExtension(Extension):
@@ -95,7 +95,7 @@ class KeywordQueryEventListener(EventListener):
             items.append(ExtensionResultItem(icon='images/icon.png',
                                             name=title,
                                             description=url,
-                                            on_enter=OpenUrlAction(url)))
+                                            on_enter=RunScriptAction(f"xdg-open {url}")))
 
         return RenderResultListAction(items)
 
