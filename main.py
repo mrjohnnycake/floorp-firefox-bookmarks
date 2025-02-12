@@ -3,22 +3,29 @@ from ulauncher.api.client.EventListener import EventListener
 from ulauncher.api.shared.event import KeywordQueryEvent, SystemExitEvent,PreferencesUpdateEvent, PreferencesEvent
 from ulauncher.api.shared.item.ExtensionResultItem import ExtensionResultItem
 from ulauncher.api.shared.action.RenderResultListAction import RenderResultListAction
-from ulauncher.api.shared.action.OpenUrlAction import OpenUrlAction
+from ulauncher.api.shared.action.RunScriptAction import RunScriptAction
 from history import FirefoxHistory
 
 class FirefoxHistoryExtension(Extension):
     def __init__(self):
         super(FirefoxHistoryExtension, self).__init__()
         #   Firefox History Getter
-        self.fh = FirefoxHistory()
+        #   Delayed initialisation, need to get path from preferences
+        self.fh = None
         #   Ulauncher Events
         self.subscribe(KeywordQueryEvent,KeywordQueryEventListener())
         self.subscribe(SystemExitEvent,SystemExitEventListener())
         self.subscribe(PreferencesEvent,PreferencesEventListener())
         self.subscribe(PreferencesUpdateEvent,PreferencesUpdateEventListener())
 
+    def init_fh(self, firefox_path: str):
+        #   Initialise Firefox History Getter with path from preferences
+        if self.fh is None:
+            self.fh = FirefoxHistory(firefox_path)
+
 class PreferencesEventListener(EventListener):
     def on_event(self,event,extension):
+        extension.init_fh(event.preferences['path'])
         #   Aggregate Results
         #extension.fh.aggregate = event.preferences['aggregate']
         #   Results Order
@@ -32,6 +39,7 @@ class PreferencesEventListener(EventListener):
         
 class PreferencesUpdateEventListener(EventListener):
     def on_event(self,event,extension):
+        extension.init_fh(event.preferences['path'])
         #   Results Order
         #if event.id == 'order':
         #    extension.fh.order = event.new_value
@@ -47,10 +55,12 @@ class PreferencesUpdateEventListener(EventListener):
 
 class SystemExitEventListener(EventListener):
     def on_event(self,event,extension):
-        extension.fh.close()
+        if extension.fh is not None:
+            extension.fh.close()
 
 class KeywordQueryEventListener(EventListener):
     def on_event(self, event, extension):
+        extension.init_fh(extension.preferences['path'])
         query  = event.get_argument()
         #   Blank Query
         if query == None:
@@ -85,7 +95,7 @@ class KeywordQueryEventListener(EventListener):
             items.append(ExtensionResultItem(icon='images/icon.png',
                                             name=title,
                                             description=url,
-                                            on_enter=OpenUrlAction(url)))
+                                            on_enter=RunScriptAction(f"xdg-open {url}")))
 
         return RenderResultListAction(items)
 

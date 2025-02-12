@@ -5,12 +5,12 @@ import configparser
 import os
 
 class FirefoxHistory():
-    def __init__(self):
+    def __init__(self, firefox_path: str):
         #   Results number
         self.limit = None
 
         #   Set history location
-        history_location = self.searchPlaces()
+        history_location = self.searchPlaces(firefox_path)
 
         #   Temporary  file
         #   Using FF63 the DB was locked for exclusive use of FF
@@ -22,9 +22,11 @@ class FirefoxHistory():
         #   External functions
         self.conn.create_function('hostname',1,self.__getHostname)
 
-    def searchPlaces(self):
+    def searchPlaces(self, firefox_path: str):
         #   Firefox folder path
-        firefox_path = os.path.join(os.environ['HOME'], '.mozilla/firefox/')
+        firefox_path = os.path.expanduser(firefox_path)
+        if not firefox_path.endswith("/"):
+            firefox_path += "/"
         #   Firefox profiles configuration file path
         conf_path = os.path.join(firefox_path,'profiles.ini')
         #   Profile config parse
