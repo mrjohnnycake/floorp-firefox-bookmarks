@@ -60,7 +60,7 @@ class SystemExitEventListener(EventListener):
 
 class KeywordQueryEventListener(EventListener):
     def on_event(self, event, extension):
-        extension.init_fh(event.preferences['path'])
+        extension.init_fh(extension.preferences['path'])
         query  = event.get_argument()
         #   Blank Query
         if query == None:
