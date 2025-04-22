@@ -3,7 +3,7 @@
 ### [Ulauncher](https://ulauncher.io) extension for quickly accessing bookmarked pages in Floorp.
 
 ## Use
-> f query
+> b query
 
 List the best matched bookmarks from Floorp sorted by first occurence of the search string.
 
