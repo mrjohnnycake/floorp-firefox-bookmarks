@@ -1,6 +1,5 @@
 # Ulauncher Floorp Bookmarks
 
-![screenshot](images/screenshot.png)
 ### [Ulauncher](https://ulauncher.io) extension for quickly accessing bookmarked pages in Floorp.
 
 ## Use
