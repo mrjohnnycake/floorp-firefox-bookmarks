@@ -12,7 +12,7 @@
         "id": "kw",
         "type": "keyword",
         "name": "Floorp Bookmarks",
-        "default_value": "f"
+        "default_value": "b"
       },
       {
         "id": "limit",
