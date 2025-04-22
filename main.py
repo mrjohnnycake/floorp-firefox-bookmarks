@@ -4,12 +4,12 @@ from ulauncher.api.shared.event import KeywordQueryEvent, SystemExitEvent,Prefer
 from ulauncher.api.shared.item.ExtensionResultItem import ExtensionResultItem
 from ulauncher.api.shared.action.RenderResultListAction import RenderResultListAction
 from ulauncher.api.shared.action.RunScriptAction import RunScriptAction
-from history import FloorpHistory
+from history import FloorpBookmarks
 
-class FloorpHistoryExtension(Extension):
+class FloorpBookmarksExtension(Extension):
     def __init__(self):
-        super(FloorpHistoryExtension, self).__init__()
-        #   Floorp History Getter
+        super(FloorpBookmarksExtension, self).__init__()
+        #   Floorp Bookmarks Getter
         #   Delayed initialisation, need to get path from preferences
         self.fh = None
         #   Ulauncher Events
@@ -19,9 +19,9 @@ class FloorpHistoryExtension(Extension):
         self.subscribe(PreferencesUpdateEvent,PreferencesUpdateEventListener())
 
     def init_fh(self, floorp_path: str):
-        #   Initialise Floorp History Getter with path from preferences
+        #   Initialise Floorp Bookmarks Getter with path from preferences
         if self.fh is None:
-            self.fh = FloorpHistory(floorp_path)
+            self.fh = FloorpBookmarks(floorp_path)
 
 class PreferencesEventListener(EventListener):
     def on_event(self,event,extension):
@@ -66,7 +66,7 @@ class KeywordQueryEventListener(EventListener):
         if query == None:
             query = ''
         items = []
-        #   Search into Floorp History
+        #   Search into Floorp Bookmarks
         results = extension.fh.search(query)
         for link in results:
             #   Encode 
@@ -100,4 +100,4 @@ class KeywordQueryEventListener(EventListener):
         return RenderResultListAction(items)
 
 if __name__ == '__main__':
-    FloorpHistoryExtension().run()
+    FloorpBookmarksExtension().run()
