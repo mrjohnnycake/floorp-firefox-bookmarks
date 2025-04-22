@@ -4,21 +4,21 @@ import shutil
 import configparser
 import os
 
-class FloorpHistory():
+class FloorpBookmarks():
     def __init__(self, floorp_path: str):
         #   Results number
         self.limit = None
 
-        #   Set history location
-        history_location = self.searchPlaces(floorp_path)
+        #   Set bookmarks location
+        bookmarks_location = self.searchPlaces(floorp_path)
 
         #   Temporary  file
         #   Using FF63 the DB was locked for exclusive use of Floorp
         #   TODO:   Regular updates of the temporary file
-        temporary_history_location = tempfile.mktemp()
-        shutil.copyfile(history_location, temporary_history_location)
-        #   Open Floorp history database
-        self.conn = sqlite3.connect(temporary_history_location)
+        temporary_bookmarks_location = tempfile.mktemp()
+        shutil.copyfile(bookmarks_location, temporary_bookmarks_location)
+        #   Open Floorp bookmarks database
+        self.conn = sqlite3.connect(temporary_bookmarks_location)
         #   External functions
         self.conn.create_function('hostname',1,self.__getHostname)
 
