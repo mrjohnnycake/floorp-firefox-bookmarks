@@ -11,63 +11,63 @@ class FloorpBookmarksExtension(Extension):
         super(FloorpBookmarksExtension, self).__init__()
         #   Floorp Bookmarks Getter
         #   Delayed initialisation, need to get path from preferences
-        self.fh = None
+        self.fb = None
         #   Ulauncher Events
         self.subscribe(KeywordQueryEvent,KeywordQueryEventListener())
         self.subscribe(SystemExitEvent,SystemExitEventListener())
         self.subscribe(PreferencesEvent,PreferencesEventListener())
         self.subscribe(PreferencesUpdateEvent,PreferencesUpdateEventListener())
 
-    def init_fh(self, floorp_path: str):
+    def init_fb(self, floorp_path: str):
         #   Initialise Floorp Bookmarks Getter with path from preferences
-        if self.fh is None:
-            self.fh = FloorpBookmarks(floorp_path)
+        if self.fb is None:
+            self.fb = FloorpBookmarks(floorp_path)
 
 class PreferencesEventListener(EventListener):
     def on_event(self,event,extension):
-        extension.init_fh(event.preferences['path'])
+        extension.init_fb(event.preferences['path'])
         #   Aggregate Results
-        #extension.fh.aggregate = event.preferences['aggregate']
+        #extension.fb.aggregate = event.preferences['aggregate']
         #   Results Order
-        #extension.fh.order = event.preferences['order']
+        #extension.fb.order = event.preferences['order']
         #   Results Number
         try:
             n = int(event.preferences['limit'])
         except:
             n = 10
-        extension.fh.limit = n
+        extension.fb.limit = n
         
 class PreferencesUpdateEventListener(EventListener):
     def on_event(self,event,extension):
-        extension.init_fh(event.preferences['path'])
+        extension.init_fb(event.preferences['path'])
         #   Results Order
         #if event.id == 'order':
-        #    extension.fh.order = event.new_value
+        #    extension.fb.order = event.new_value
         #   Results Number
         if event.id == 'limit':
             try:
                 n = int(event.new_value)
-                extension.fh.limit = n
+                extension.fb.limit = n
             except:
                 pass
         #elif event.id == 'aggregate':
-        #    extension.fh.aggregate = event.new_value
+        #    extension.fb.aggregate = event.new_value
 
 class SystemExitEventListener(EventListener):
     def on_event(self,event,extension):
-        if extension.fh is not None:
-            extension.fh.close()
+        if extension.fb is not None:
+            extension.fb.close()
 
 class KeywordQueryEventListener(EventListener):
     def on_event(self, event, extension):
-        extension.init_fh(extension.preferences['path'])
+        extension.init_fb(extension.preferences['path'])
         query  = event.get_argument()
         #   Blank Query
         if query == None:
             query = ''
         items = []
         #   Search into Floorp Bookmarks
-        results = extension.fh.search(query)
+        results = extension.fb.search(query)
         for link in results:
             #   Encode 
             hostname = link[0]
@@ -81,7 +81,7 @@ class KeywordQueryEventListener(EventListener):
             #   Join remaining domains and capitalize
             name = ' '.join(dm[i:len(dm)-1]).title()
             #   TODO: favicon of the website
-            #if extension.fh.aggregate == "true":
+            #if extension.fb.aggregate == "true":
             #    items.append(ExtensionResultItem(icon='images/icon.png',
                                             #    name=name,
                                             #    on_enter=OpenUrlAction('https://'+hostname)))
