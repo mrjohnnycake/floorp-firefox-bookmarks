@@ -4,12 +4,12 @@ from ulauncher.api.shared.event import KeywordQueryEvent, SystemExitEvent,Prefer
 from ulauncher.api.shared.item.ExtensionResultItem import ExtensionResultItem
 from ulauncher.api.shared.action.RenderResultListAction import RenderResultListAction
 from ulauncher.api.shared.action.RunScriptAction import RunScriptAction
-from history import FirefoxHistory
+from history import FloorpHistory
 
-class FirefoxHistoryExtension(Extension):
+class FloorpHistoryExtension(Extension):
     def __init__(self):
-        super(FirefoxHistoryExtension, self).__init__()
-        #   Firefox History Getter
+        super(FloorpHistoryExtension, self).__init__()
+        #   Floorp History Getter
         #   Delayed initialisation, need to get path from preferences
         self.fh = None
         #   Ulauncher Events
@@ -18,10 +18,10 @@ class FirefoxHistoryExtension(Extension):
         self.subscribe(PreferencesEvent,PreferencesEventListener())
         self.subscribe(PreferencesUpdateEvent,PreferencesUpdateEventListener())
 
-    def init_fh(self, firefox_path: str):
-        #   Initialise Firefox History Getter with path from preferences
+    def init_fh(self, floorp_path: str):
+        #   Initialise Floorp History Getter with path from preferences
         if self.fh is None:
-            self.fh = FirefoxHistory(firefox_path)
+            self.fh = FloorpHistory(floorp_path)
 
 class PreferencesEventListener(EventListener):
     def on_event(self,event,extension):
@@ -66,7 +66,7 @@ class KeywordQueryEventListener(EventListener):
         if query == None:
             query = ''
         items = []
-        #   Search into Firefox History
+        #   Search into Floorp History
         results = extension.fh.search(query)
         for link in results:
             #   Encode 
@@ -100,4 +100,4 @@ class KeywordQueryEventListener(EventListener):
         return RenderResultListAction(items)
 
 if __name__ == '__main__':
-    FirefoxHistoryExtension().run()
+    FloorpHistoryExtension().run()
