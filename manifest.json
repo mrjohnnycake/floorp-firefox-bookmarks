@@ -1,8 +1,8 @@
 {
     "required_api_version": "^2.0.0",
-    "name": "Firefox Bookmarks",
-    "description": "Search your Firefox bookmarks",
-    "developer_name": "Denis Gerber",
+    "name": "Floorp Bookmarks",
+    "description": "Search your Floorp bookmarks",
+    "developer_name": "MrJohnnyCake",
     "icon": "images/icon.png",
     "options": {
       "query_debounce": 0.1
@@ -11,7 +11,7 @@
       {
         "id": "kw",
         "type": "keyword",
-        "name": "Firefox Bookmarks",
+        "name": "Floorp Bookmarks",
         "default_value": "f"
       },
       {
@@ -23,8 +23,8 @@
       {
         "id": "path",
         "type": "input",
-        "name": "Path to Firefox (requires restart)",
-        "default_value": "~/.mozilla/firefox/"
+        "name": "Path to Floorp (requires restart)",
+        "default_value": "~/.floorp/"
       }
     ]
   }
